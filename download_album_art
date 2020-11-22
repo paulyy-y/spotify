@@ -1,0 +1,36 @@
+import spotipy
+from spotipy.oauth2 import SpotifyClientCredentials
+
+def spotifyAuthenticate():
+    import os
+    client_id = os.environ['spotify_client_id']
+    client_secret = os.environ['spotify_client_secret']
+    result = spotipy.Spotify(client_credentials_manager=SpotifyClientCredentials(client_id=client_id,
+                                                                                 client_secret=client_secret))
+    return result
+
+def getArtistURI(artist_name):
+    search = spotify.search(q='artist:' + artist_name, type='artist')
+    result = search['artists']['items'][0]['uri']
+    return result
+
+def albumDetails(track_list):
+    album_uris = []
+    for x in track_list:
+        album_details = x['album']
+        album_name = album_details['name']
+        album_picture_uri = album_details['images'][0]['url']
+        album_uris.append((album_name, album_picture_uri))
+    return album_uris
+
+def downloadURI(name, uri):
+    import urllib.request
+    urllib.request.urlretrieve(uri, name +'.png')
+
+spotify = spotifyAuthenticate()
+artist_uri = getArtistURI('dad sports')
+top_tracks = spotify.artist_top_tracks(artist_uri)['tracks']
+album_details = albumDetails(top_tracks)
+
+for x in album_details:
+    downloadURI(x[0], x[1])
