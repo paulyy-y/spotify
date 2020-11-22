@@ -28,7 +28,7 @@ def downloadURI(name, uri):
     urllib.request.urlretrieve(uri, name +'.png')
 
 spotify = spotifyAuthenticate()
-artist_uri = getArtistURI('dad sports')
+artist_uri = getArtistURI('beyonce')
 top_tracks = spotify.artist_top_tracks(artist_uri)['tracks']
 album_details = albumDetails(top_tracks)
 
